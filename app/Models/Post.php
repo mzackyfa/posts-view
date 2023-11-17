@@ -1,31 +1,15 @@
 <?php
 
-use App\Models\Post;
-use Illuminate\Support\Facades\Route;
+namespace App\Models;
 
+// use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Illuminate\Database\Eloquent\Model;
 
-
-Route::get('/', function () {
-    return view('home', [
-        "title" => "Home",
-        "welcome" => "Zahsey Blog"
-    ]);
-});
-
-Route::get('/about', function () {
-    return view('about', [
-        "title" => "About",
-        "name" => "Mochamad Zacky",
-        "welcome" => "welcome",
-        "image" => "zahsey.jpeg"
-    ]);
-});
-
-
-Route::get('/blog', function () {
-    $blog_posts = [
+class Post
+{
+    private static $blog_posts = [
         [
-            "title" => "Judul Post Pertama",
+            "title" => "Judul Post Zahsey",
             "slug" => "judul-post-pertama",
             "author" => "Zahsey",
             "body" => "Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -38,7 +22,7 @@ Route::get('/blog', function () {
             omnis, incidunt saepe quod! Ab molestiae voluptate porro fugiat."
         ],
         [
-            "title" => "Judul Post Kedua",
+            "title" => "Judul Post Zumpy",
             "slug" => "judul-post-kedua",
             "author" => "Zumpy",
             "body" => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi odio libero quasi
@@ -52,20 +36,21 @@ Route::get('/blog', function () {
         ],
     ];
 
-    return view('posts', [
-        "title" => "Posts",
-        "posts" => $blog_posts
-    ]);
-});
+    public static function all()
+    {
+        return self::$blog_posts;
+    }
+    public static function find($slug)
+    {
+        $posts = self::$blog_posts;
 
-Route::get('posts/{slug}', function($slug) {
-    $posts = Post::all();
+        $post = [];
 
-    return view ('post', [
-        "title" => "Single Post",
-        "post" => Post::find($slug)
-    ]);
-});
-
-
-
+        foreach ($posts as $p) {
+            if ($p["slug"] === $slug) {
+                $post = $p;
+            }
+        }
+        return $post;
+    }
+}
